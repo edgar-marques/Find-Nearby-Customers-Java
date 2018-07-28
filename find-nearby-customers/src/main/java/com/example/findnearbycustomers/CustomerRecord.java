@@ -1,29 +1,34 @@
 package com.example.findnearbycustomers;
 
+import com.example.geocoordsys.Coordinate;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 
 @Data
 public class CustomerRecord {
 
-    @NotBlank(message = "userId must not be blank")
-    private String userId;
+    private long userId;
 
     @NotBlank(message = "name must not be blank")
     private String name;
 
-    @NotNull(message = "latitude must not be null")
-    @DecimalMax("90.0")
-    @DecimalMin("-90.0")
-    BigDecimal latitude;
+    @NotNull(message = "location must not be null")
+    @Valid
+    private Coordinate location;
 
-    @NotNull(message = "longitude must not be null")
-    @DecimalMax("180.0")
-    @DecimalMin("-180.0")
-    BigDecimal longitude;
+    @JsonCreator
+    public CustomerRecord(
+            @JsonProperty("user_id") long userId,
+            @JsonProperty("name") String name,
+            @JsonProperty("latitude") String latitude,
+            @JsonProperty("longitude") String longitude) {
+        this.userId = userId;
+        this.name = name;
+        this.location = Coordinate.of(latitude, longitude);
+    }
 }
