@@ -9,7 +9,6 @@ import org.junit.rules.ExpectedException;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -17,6 +16,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -33,8 +33,9 @@ public class CoordinateTest {
 
     @BeforeClass
     public static void setUpValidator() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
+        validator = Validation
+                .buildDefaultValidatorFactory()
+                .getValidator();
     }
 
     @Test
@@ -259,7 +260,7 @@ public class CoordinateTest {
         Coordinate coord = Coordinate.of("0.0", "0.0");
 
         // then
-        assertThat(coord.toString(), is(equalTo("Coordinate(latitude=0.0, longitude=0.0)")));
+        assertThat(coord, hasToString("Coordinate(latitude=0.0, longitude=0.0)"));
     }
 
     @Test
