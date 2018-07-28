@@ -17,7 +17,7 @@
 
     <modules>
         <module>find-nearby-customers</module>
-        <module>geographic-coordinate-system</module>
+        <module>geo-coord-sys</module>
     </modules>
 
     <dependencyManagement>
