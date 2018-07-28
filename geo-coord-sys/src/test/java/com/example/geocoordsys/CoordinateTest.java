@@ -1,5 +1,6 @@
 package com.example.geocoordsys;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,7 +13,15 @@ import javax.validation.ValidatorFactory;
 import java.math.BigDecimal;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.Assert.assertThat;
 
 public class CoordinateTest {
@@ -26,48 +35,6 @@ public class CoordinateTest {
     public static void setUpValidator() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
-    }
-
-    @Test
-    public void factoryMethod_shouldThrowNumberFormatException_whenLatitudeIsNaN() {
-        thrown.expect(NumberFormatException.class);
-
-        Coordinate.of(Double.NaN, 0.0);
-    }
-
-    @Test
-    public void factoryMethod_shouldThrowNumberFormatException_whenLatitudeIsPositiveInfinity() {
-        thrown.expect(NumberFormatException.class);
-
-        Coordinate.of(Double.POSITIVE_INFINITY, 0.0);
-    }
-
-    @Test
-    public void factoryMethod_shouldThrowNumberFormatException_whenLatitudeIsNegativeInfinity() {
-        thrown.expect(NumberFormatException.class);
-
-        Coordinate.of(Double.NEGATIVE_INFINITY, 0.0);
-    }
-
-    @Test
-    public void factoryMethod_shouldThrowNumberFormatException_whenLongitudeIsNaN() {
-        thrown.expect(NumberFormatException.class);
-
-        Coordinate.of(0.0, Double.NaN);
-    }
-
-    @Test
-    public void factoryMethod_shouldThrowNumberFormatException_whenLongitudeIsPositiveInfinity() {
-        thrown.expect(NumberFormatException.class);
-
-        Coordinate.of(0.0, Double.POSITIVE_INFINITY);
-    }
-
-    @Test
-    public void factoryMethod_shouldThrowNumberFormatException_whenLongitudeIsNegativeInfinity() {
-        thrown.expect(NumberFormatException.class);
-
-        Coordinate.of(0.0, Double.NEGATIVE_INFINITY);
     }
 
     @Test
@@ -293,5 +260,33 @@ public class CoordinateTest {
 
         // then
         assertThat(coord.toString(), is(equalTo("Coordinate(latitude=0.0, longitude=0.0)")));
+    }
+
+    @Test
+    public void coordinate_latitude_shouldBeAReadOnlyProperty() {
+        // given
+        Coordinate coord = Coordinate.of("0.0", "0.0");
+
+        // when
+        boolean isReadable = PropertyUtils.isReadable(coord, "latitude");
+        boolean isWriteable = PropertyUtils.isWriteable(coord, "latitude");
+
+        // then
+        assertThat(isReadable, is(true));
+        assertThat(isWriteable, is(false));
+    }
+
+    @Test
+    public void coordinate_longitude_shouldBeAReadOnlyProperty() {
+        // given
+        Coordinate coord = Coordinate.of("0.0", "0.0");
+
+        // when
+        boolean isReadable = PropertyUtils.isReadable(coord, "longitude");
+        boolean isWriteable = PropertyUtils.isWriteable(coord, "longitude");
+
+        // then
+        assertThat(isReadable, is(true));
+        assertThat(isWriteable, is(false));
     }
 }

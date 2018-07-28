@@ -2,12 +2,14 @@ package com.example.geocoordsys;
 
 import lombok.Value;
 
+import javax.annotation.concurrent.Immutable;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Value
+@Immutable
 public class Coordinate {
 
     @NotNull(message = "latitude must not be null")
@@ -27,10 +29,6 @@ public class Coordinate {
 
     public static Coordinate of(BigDecimal latitude, BigDecimal longitude) {
         return new Coordinate(latitude, longitude);
-    }
-
-    public static Coordinate of(double latitude, double longitude) {
-        return Coordinate.of(BigDecimal.valueOf(latitude), BigDecimal.valueOf(longitude));
     }
 
     public static Coordinate of(String latitude, String longitude) {
