@@ -1,0 +1,8 @@
+package com.example.findnearbycustomers.cli;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+public interface CLIArgsProcessor {
+    void process(@Valid @NotNull CLIArgs args);
+}
