@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>geographic-coordinate</artifactId>
+    <artifactId>domain</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Example Geographic Coordinate library</name>
+    <name>Domain model of the example project</name>
     <packaging>jar</packaging>
 
     <parent>

@@ -7,7 +7,7 @@
     <groupId>com.example</groupId>
     <artifactId>parent-pom</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Parent POM for the example project</name>
+    <name>Parent POM of the example project</name>
     <packaging>pom</packaging>
 
     <properties>
@@ -16,8 +16,8 @@
     </properties>
 
     <modules>
-        <module>find-nearby-customers</module>
-        <module>geo-coord</module>
+        <module>cli</module>
+        <module>domain</module>
     </modules>
 
     <dependencyManagement>
