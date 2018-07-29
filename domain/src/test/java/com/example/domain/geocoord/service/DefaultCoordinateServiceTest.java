@@ -42,7 +42,7 @@ public class DefaultCoordinateServiceTest {
                 .forExecutables();
     }
 
-    private DefaultCoordinateService coordService = new DefaultCoordinateService();
+    private final DefaultCoordinateService coordService = new DefaultCoordinateService();
 
     @Test
     public void degreesToRadians_shouldReturnExpectedValues() {

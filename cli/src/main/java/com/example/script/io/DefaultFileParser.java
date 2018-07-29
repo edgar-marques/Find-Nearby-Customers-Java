@@ -22,13 +22,24 @@ import java.util.stream.Collectors;
 @Singleton
 public class DefaultFileParser implements FileParser {
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
+    /**
+     *
+     * @param objectMapper
+     */
     @Inject
     public DefaultFileParser(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     *
+     * @param file
+     * @param valueType
+     * @param <T>
+     * @return
+     */
     @Override
     public <T> List<T> parse(@RegularFile @NotNull File file, @NotNull Class<T> valueType) {
         try {

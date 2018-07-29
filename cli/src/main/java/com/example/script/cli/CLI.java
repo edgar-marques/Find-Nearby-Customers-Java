@@ -13,17 +13,24 @@ import ru.vyarus.guice.validator.ImplicitValidationModule;
 import javax.validation.ConstraintViolationException;
 import java.util.Optional;
 
+/**
+ *
+ */
 @Log4j2
-public class CLI {
+class CLI {
 
-    private CLIArgsParser parser;
-    private CLIArgsProcessor processor;
+    private final CLIArgsParser parser;
+    private final CLIArgsProcessor processor;
 
-    public CLI(CLIArgsParser parser, CLIArgsProcessor processor) {
+    private CLI(CLIArgsParser parser, CLIArgsProcessor processor) {
         this.parser = parser;
         this.processor = processor;
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         try {
             Injector injector = Guice.createInjector(
@@ -44,9 +51,9 @@ public class CLI {
         }
     }
 
-    static void logErrorAndExit(Exception e) {
+    private static void logErrorAndExit(Exception e) {
         if (e instanceof ConstraintViolationException) {
-            ((ConstraintViolationException) e).getConstraintViolations().stream()
+            ((ConstraintViolationException) e).getConstraintViolations()
                     .forEach(v -> log.error(v.getMessage()));
         } else {
             log.error(e.getMessage());
@@ -54,7 +61,7 @@ public class CLI {
         System.exit(1);
     }
 
-    void handle(String[] args) {
+    private void handle(String[] args) {
         Optional<CLIArgs> cliArgs = parser.parse(args);
 
         if (!cliArgs.isPresent()) {
@@ -65,7 +72,7 @@ public class CLI {
         processor.process(cliArgs.get());
     }
 
-    void displayHelp() {
+    private void displayHelp() {
         log.info(parser.usageInfo());
     }
 }

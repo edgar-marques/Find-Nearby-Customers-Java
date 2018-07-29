@@ -15,12 +15,18 @@ import java.util.Optional;
 
 import static java.util.Arrays.asList;
 
+/**
+ *
+ */
 @Log4j2
 @Singleton
 public class DefaultCLIArgsParser implements CLIArgsParser {
 
-    private OptionParser parser;
+    private final OptionParser parser;
 
+    /**
+     *
+     */
     public DefaultCLIArgsParser() {
         this.parser = new OptionParser() {
             {
@@ -48,6 +54,11 @@ public class DefaultCLIArgsParser implements CLIArgsParser {
         };
     }
 
+    /**
+     *
+     * @param args
+     * @return
+     */
     @Override
     public Optional<CLIArgs> parse(String[] args) {
         if (args.length == 0) {
@@ -74,6 +85,10 @@ public class DefaultCLIArgsParser implements CLIArgsParser {
         return Optional.of(new CLIArgs(inputFile, Coordinate.of(latitude, longitude), radius, verbose));
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String usageInfo() {
         OutputStream out = new ByteArrayOutputStream();

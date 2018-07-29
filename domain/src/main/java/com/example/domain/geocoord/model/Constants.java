@@ -1,5 +1,8 @@
 package com.example.domain.geocoord.model;
 
+/**
+ *
+ */
 public final class Constants {
 
     private Constants() {

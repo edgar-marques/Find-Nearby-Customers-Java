@@ -28,7 +28,7 @@ import static org.junit.Assert.assertThat;
 public class CoordinateTest {
 
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
 
     private static Validator validator;
 

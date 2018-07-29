@@ -15,14 +15,23 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ *
+ */
 @Log4j2
 @Singleton
 public class DefaultCLIArgsProcessor implements CLIArgsProcessor {
 
-    private FileParser fileParser;
-    private MapperFacade mapper;
-    private CustomerService customerService;
+    private final FileParser fileParser;
+    private final MapperFacade mapper;
+    private final CustomerService customerService;
 
+    /**
+     *
+     * @param fileParser
+     * @param mapper
+     * @param customerService
+     */
     @Inject
     public DefaultCLIArgsProcessor(FileParser fileParser, MapperFacade mapper, CustomerService customerService) {
         this.fileParser = fileParser;
@@ -30,6 +39,10 @@ public class DefaultCLIArgsProcessor implements CLIArgsProcessor {
         this.customerService = customerService;
     }
 
+    /**
+     *
+     * @param args
+     */
     @Override
     public void process(@Valid @NotNull CLIArgs args) {
         if (args.isVerbose()) {

@@ -18,7 +18,7 @@ import static org.junit.Assert.assertThat;
 public class ConstantsTest {
 
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public final ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void privateConstructor_shouldThrowInvocationTargetException_dueToUnsupportedOperationException() throws Exception {

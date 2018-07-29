@@ -19,7 +19,7 @@ import static org.junit.Assert.assertThat;
 @RunWith(Parameterized.class)
 public class DefaultCoordinateServiceParameterizedTest {
 
-    private DefaultCoordinateService coordService = new DefaultCoordinateService();
+    private final DefaultCoordinateService coordService = new DefaultCoordinateService();
 
     @Parameterized.Parameters(name = "{index}: central angle({0}, {1})={2}")
     public static Collection<Object[]> data() {

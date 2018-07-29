@@ -16,15 +16,14 @@ public class OutputMatcher extends TypeSafeMatcher<String> {
     private static final Splitter SPLITTER = Splitter.on(EOL);
     private static final String STRIP_CHARS = null; // strip whitespace chars
 
-    private String expectedOutput;
+    private final String expectedOutput;
 
     private OutputMatcher(String expectedOutput) {
         this.expectedOutput = expectedOutput;
     }
 
     public static OutputMatcher matchesOutput(String... lines) {
-        String expectedOutput = JOINER.join(Arrays.asList(lines)
-                .stream()
+        String expectedOutput = JOINER.join(Arrays.stream(lines)
                 .map(s -> stripEnd(s, STRIP_CHARS) + EOL)
                 .toArray());
         expectedOutput = stripEnd(expectedOutput, STRIP_CHARS);

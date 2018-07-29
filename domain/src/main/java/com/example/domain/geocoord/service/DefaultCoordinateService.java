@@ -21,11 +21,22 @@ import static java.lang.StrictMath.sin;
 @Singleton
 public class DefaultCoordinateService implements CoordinateService {
 
+    /**
+     *
+     * @param degrees
+     * @return
+     */
     @Override
     public double degreesToRadians(double degrees) {
         return degrees * PI / 180.0;
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     @Override
     public double centralAngle(@Valid @NotNull Coordinate a, @Valid @NotNull Coordinate b) {
         double latA = degreesToRadians(a.getLatitude().doubleValue());
