@@ -6,6 +6,8 @@ import com.example.domain.customer.service.CustomerService;
 import com.example.script.io.FileParser;
 import lombok.extern.log4j.Log4j2;
 import ma.glasnost.orika.MapperFacade;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -46,7 +48,7 @@ public class DefaultCLIArgsProcessor implements CLIArgsProcessor {
     @Override
     public void process(@Valid @NotNull CLIArgs args) {
         if (args.isVerbose()) {
-            log.info("Verbose mode enabled");
+            increaseLogLevel();
         }
 
         List<CustomerRecord> customersRecords =
@@ -65,5 +67,10 @@ public class DefaultCLIArgsProcessor implements CLIArgsProcessor {
         customersWithinRange.stream()
                 .sorted(Comparator.comparing(Customer::getUserId))
                 .forEach(r -> log.info(r.toString()));
+    }
+
+    private void increaseLogLevel() {
+        Configurator.setLevel("com.example", Level.DEBUG);
+        log.debug("Verbose mode enabled");
     }
 }

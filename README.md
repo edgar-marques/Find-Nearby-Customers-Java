@@ -6,6 +6,14 @@ This project was started as an exercise in writing a production-ready CLI in Jav
 
 This project is still a work in progress.
 
+**TODO**
+
+* Improve error handling
+* Increase test coverage
+* Write Javadoc comments and generate javadoc JAR
+* Update README file
+
+
 ## Usage
 
 **TODO** 

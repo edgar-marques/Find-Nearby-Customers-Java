@@ -17,6 +17,7 @@ import java.nio.file.StandardCopyOption;
 
 import static com.example.script.OutputMatcher.matchesOutput;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 public class CLIArgsValidationTest {
@@ -413,5 +414,18 @@ public class CLIArgsValidationTest {
 
         // then
         assertThat(systemOutRule.getLog(), containsString("Verbose mode enabled"));
+    }
+
+    @Test
+    public void cli_shouldOmitInfoMessage_whenVerboseModeIsDisabled() {
+        // when
+        CLI.main(new String[] {
+                "--input-file", inputFilePath.toString(),
+                "--lat", "0.0",
+                "--long", "0.0"
+        });
+
+        // then
+        assertThat(systemOutRule.getLog(), not(containsString("Verbose mode enabled")));
     }
 }
