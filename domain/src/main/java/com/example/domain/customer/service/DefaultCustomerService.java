@@ -33,22 +33,16 @@ public class DefaultCustomerService implements CustomerService {
 
     /**
      *
-     * @param customers
+     * @param customer
      * @param location
      * @param radius
      * @return
      */
     @Override
-    public List<Customer> findCustomersWithinRange(@Valid @NotNull final List<Customer> customers,
-                                                   @Valid @NotNull final Coordinate location,
-                                                   @PositiveOrZero final double radius) {
-        return customers.stream()
-                .filter(r -> {
-                    double distance = coordService.greatCircleDistanceOnEarthBetween(
-                            r.getLocation(),
-                            location);
-                    return distance <= radius;
-                })
-                .collect(Collectors.toList());
+    public boolean isCustomerWithinRange(@Valid @NotNull final Customer customer,
+                                         @Valid @NotNull final Coordinate location,
+                                         @PositiveOrZero final double radius) {
+        double distance = coordService.greatCircleDistanceOnEarthBetween(customer.getLocation(), location);
+        return distance <= radius;
     }
 }

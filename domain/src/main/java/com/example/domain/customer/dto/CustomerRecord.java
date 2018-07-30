@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  *
  */
 @Data
-class CustomerRecord {
+public class CustomerRecord {
 
     /**
      *

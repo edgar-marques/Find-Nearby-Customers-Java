@@ -1,6 +1,8 @@
 package com.example.script.cli;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,6 +36,10 @@ public class CLIArgsValidationTest {
 
     @Before
     public void setUp() throws IOException {
+        // reset log level to default
+        Configurator.setLevel("com.example", Level.INFO);
+
+        // copy test data from classpath resource file into a temporary file
         InputStream resource = this.getClass().getResourceAsStream(TEST_DATA_FILE);
         inputFilePath = Files.createTempFile(null, null);
         Files.copy(resource, inputFilePath, StandardCopyOption.REPLACE_EXISTING);

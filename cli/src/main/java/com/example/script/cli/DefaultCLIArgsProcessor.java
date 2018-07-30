@@ -17,6 +17,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.script.functional.Predicates.safePredicate;
+
 /**
  *
  */
@@ -46,7 +48,7 @@ public class DefaultCLIArgsProcessor implements CLIArgsProcessor {
      * @param args
      */
     @Override
-    public void process(@Valid @NotNull CLIArgs args) {
+    public void process(@Valid @NotNull final CLIArgs args) {
         if (args.isVerbose()) {
             increaseLogLevel();
         }
@@ -58,11 +60,10 @@ public class DefaultCLIArgsProcessor implements CLIArgsProcessor {
                 .map(r -> mapper.map(r, Customer.class))
                 .collect(Collectors.toList());
 
-        List<Customer> customersWithinRange =
-                customerService.findCustomersWithinRange(
-                        customers,
-                        args.getTargetLocation(),
-                        args.getRadius().doubleValue() * 1_000.0 /* 1km */);
+        List<Customer> customersWithinRange = customers.stream()
+                        .filter(safePredicate(c -> customerService.isCustomerWithinRange(
+                                c, args.getTargetLocation(), args.getRadius().doubleValue() * 1_000.0 /* 1km */), false))
+                        .collect(Collectors.toList());
 
         customersWithinRange.stream()
                 .sorted(Comparator.comparing(Customer::getUserId))

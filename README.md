@@ -8,7 +8,6 @@ This project is still a work in progress.
 
 **TODO**
 
-* Improve error handling
 * Increase test coverage
 * Write Javadoc comments and generate javadoc JAR
 * Update README file

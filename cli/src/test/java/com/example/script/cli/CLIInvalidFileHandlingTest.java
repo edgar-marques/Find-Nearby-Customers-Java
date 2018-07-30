@@ -1,5 +1,7 @@
 package com.example.script.cli;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -31,6 +33,10 @@ public class CLIInvalidFileHandlingTest {
 
     @Before
     public void setUp() throws IOException {
+        // reset log level to default
+        Configurator.setLevel("com.example", Level.INFO);
+
+        // copy test data from classpath resource file into a temporary file
         InputStream resource = this.getClass().getResourceAsStream(TEST_DATA_FILE);
         inputFilePath = Files.createTempFile(null, null);
         Files.copy(resource, inputFilePath, StandardCopyOption.REPLACE_EXISTING);
@@ -41,9 +47,8 @@ public class CLIInvalidFileHandlingTest {
         Files.deleteIfExists(inputFilePath);
     }
 
-    @Ignore
     @Test
-    public void cli_shouldOutputListOfCustomersWithinRangeOfGivenPositionSortedByUserIdAsc() {
+    public void cli_shouldFilterOutInvalidData() {
         // when
         CLI.main(new String[] {
                 "--input-file", inputFilePath.toString(),
@@ -55,20 +60,46 @@ public class CLIInvalidFileHandlingTest {
         assertThat(systemOutRule.getLog(), matchesOutput(
                 "Customer(userId=4, name=Ian Kehoe, location=Coordinate(latitude=53.2451022, longitude=-6.238335))",
                 "Customer(userId=5, name=Nora Dempsey, location=Coordinate(latitude=53.1302756, longitude=-6.2397222))",
-                "Customer(userId=6, name=Theresa Enright, location=Coordinate(latitude=53.1229599, longitude=-6.2705202))",
-                "Customer(userId=8, name=Eoin Ahearn, location=Coordinate(latitude=54.0894797, longitude=-6.18671))",
-                "Customer(userId=11, name=Richard Finnegan, location=Coordinate(latitude=53.008769, longitude=-6.1056711))",
-                "Customer(userId=12, name=Christina McArdle, location=Coordinate(latitude=52.986375, longitude=-6.043701))",
-                "Customer(userId=13, name=Olive Ahearn, location=Coordinate(latitude=53, longitude=-7))",
-                "Customer(userId=15, name=Michael Ahearn, location=Coordinate(latitude=52.966, longitude=-6.463))",
-                "Customer(userId=17, name=Patricia Cahill, location=Coordinate(latitude=54.180238, longitude=-5.920898))",
-                "Customer(userId=23, name=Eoin Gallagher, location=Coordinate(latitude=54.080556, longitude=-6.361944))",
-                "Customer(userId=24, name=Rose Enright, location=Coordinate(latitude=54.133333, longitude=-6.433333))",
-                "Customer(userId=26, name=Stephen McArdle, location=Coordinate(latitude=53.038056, longitude=-7.653889))",
-                "Customer(userId=29, name=Oliver Ahearn, location=Coordinate(latitude=53.74452, longitude=-7.11167))",
-                "Customer(userId=30, name=Nick Enright, location=Coordinate(latitude=53.761389, longitude=-7.2875))",
-                "Customer(userId=31, name=Alan Behan, location=Coordinate(latitude=53.1489345, longitude=-6.8422408))",
-                "Customer(userId=39, name=Lisa Ahearn, location=Coordinate(latitude=53.0033946, longitude=-6.3877505))"
+                "Customer(userId=12, name=Christina McArdle, location=Coordinate(latitude=52.986375, longitude=-6.043701))"
+        ));
+    }
+
+    @Test
+    public void cli_shouldPrintOutInfoAboutInvalidDataWhenVerboseModeIsEnabled() {
+        // when
+        CLI.main(new String[] {
+                "--input-file", inputFilePath.toString(),
+                "--lat", "53.339428",
+                "--long", "-6.257664",
+                "-v"
+        });
+
+        // then
+        assertThat(systemOutRule.getLog(), matchesOutput(
+                "Verbose mode enabled",
+                "an error was encountered while processing item ''",
+                "No content to map due to end-of-input\n at [Source: (String)\"\"; line: 1, column: 0]",
+                "skipping item",
+                "invalid item 'Customer(userId=null, name=null, location=Coordinate(latitude=null, longitude=null))'",
+                "latitude must not be null",
+                "longitude must not be null",
+                "name must not be blank",
+                "user ID must not be null",
+                "skipping item",
+                "invalid item 'Customer(userId=null, name=null, location=Coordinate(latitude=null, longitude=null))'",
+                "latitude must not be null",
+                "longitude must not be null",
+                "name must not be blank",
+                "user ID must not be null",
+                "skipping item",
+                "invalid item 'Customer(userId=2, name= , location=Coordinate(latitude=90.1, longitude=180.1))'",
+                "latitude must be between -90.0 and 90.0",
+                "longitude must be between -180.0 and 180.0",
+                "name must not be blank",
+                "skipping item",
+                "Customer(userId=4, name=Ian Kehoe, location=Coordinate(latitude=53.2451022, longitude=-6.238335))",
+                "Customer(userId=5, name=Nora Dempsey, location=Coordinate(latitude=53.1302756, longitude=-6.2397222))",
+                "Customer(userId=12, name=Christina McArdle, location=Coordinate(latitude=52.986375, longitude=-6.043701))"
         ));
     }
 }

@@ -11,15 +11,15 @@ import java.util.List;
 /**
  *
  */
-interface CustomerService {
+public interface CustomerService {
     /**
      *
-     * @param customers
+     * @param customer
      * @param location
      * @param radius
      * @return
      */
-    List<Customer> findCustomersWithinRange(@Valid @NotNull final List<Customer> customers,
-                                            @Valid @NotNull final Coordinate location,
-                                            @PositiveOrZero final double radius);
+    boolean isCustomerWithinRange(@Valid @NotNull final Customer customer,
+                                  @Valid @NotNull final Coordinate location,
+                                  @PositiveOrZero final double radius);
 }
