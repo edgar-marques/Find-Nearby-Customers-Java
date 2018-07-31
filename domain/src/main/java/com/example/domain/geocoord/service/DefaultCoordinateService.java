@@ -16,6 +16,9 @@ import static java.lang.StrictMath.acos;
 import static java.lang.StrictMath.cos;
 import static java.lang.StrictMath.sin;
 
+/**
+ *
+ */
 @Log4j2
 @ThreadSafe
 @Singleton

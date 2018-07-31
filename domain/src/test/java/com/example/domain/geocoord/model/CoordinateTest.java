@@ -1,6 +1,5 @@
 package com.example.domain.geocoord.model;
 
-import com.example.domain.geocoord.model.Coordinate;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -14,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.emptyArray;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
@@ -37,6 +37,11 @@ public class CoordinateTest {
         validator = Validation
                 .buildDefaultValidatorFactory()
                 .getValidator();
+    }
+
+    @Test
+    public void class_shouldHaveNoPublicCOnstructors() {
+        assertThat(Coordinate.class.getConstructors(), is(emptyArray()));
     }
 
     @Test

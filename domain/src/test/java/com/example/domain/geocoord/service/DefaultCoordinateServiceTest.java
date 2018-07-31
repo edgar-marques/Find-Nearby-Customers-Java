@@ -1,14 +1,12 @@
 package com.example.domain.geocoord.service;
 
 import com.example.domain.geocoord.model.Coordinate;
-import com.example.domain.geocoord.service.DefaultCoordinateService;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.executable.ExecutableValidator;
-
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Set;
@@ -59,12 +57,12 @@ public class DefaultCoordinateServiceTest {
     }
 
     @Test
-    public void centralAngle_shouldRequireValidCoordinates() throws Exception {
+    public void centralAngle_shouldRequireValidFirstCoordinate() throws Exception {
         // given
         Method centralAngle = coordService.getClass().getDeclaredMethod("centralAngle", Coordinate.class, Coordinate.class);
         Object[] invalidArgs = new Object[]{
                 /* invalid coord a */ Coordinate.of("90.1", "0.0"),
-                /* invalid coord b */ Coordinate.of("0.0", "180.1"),
+                /* valid coord b   */ Coordinate.of("0.0", "180.0"),
         };
 
         // when
@@ -78,6 +76,22 @@ public class DefaultCoordinateServiceTest {
                         hasProperty("invalidValue", equalTo(new BigDecimal("90.1"))),
                         hasProperty("message", equalTo("latitude must be between -90.0 and 90.0"))
                 )));
+    }
+
+    @Test
+    public void centralAngle_shouldRequireValidSecondCoordinate() throws Exception {
+        // given
+        Method centralAngle = coordService.getClass().getDeclaredMethod("centralAngle", Coordinate.class, Coordinate.class);
+        Object[] invalidArgs = new Object[]{
+                /* valid coord a   */ Coordinate.of("90.0", "0.0"),
+                /* invalid coord b */ Coordinate.of("0.0", "180.1"),
+        };
+
+        // when
+        Set<ConstraintViolation<DefaultCoordinateService>> violations = validator.validateParameters(coordService, centralAngle, invalidArgs);
+
+        // then
+        assertThat(violations, is(notNullValue()));
         assertThat(violations, hasItem(
                 allOf(
                         hasProperty("propertyPath", hasToString("centralAngle.b.longitude")),
@@ -87,12 +101,12 @@ public class DefaultCoordinateServiceTest {
     }
 
     @Test
-    public void centralAngle_shouldRequireNonNullCoordinates() throws Exception {
+    public void centralAngle_shouldRequireNonNullFirstCoordinate() throws Exception {
         // given
         Method centralAngle = coordService.getClass().getDeclaredMethod("centralAngle", Coordinate.class, Coordinate.class);
         Object[] invalidArgs = new Object[]{
                 /* coord a */ null,
-                /* coord b */ null,
+                /* coord b */ Coordinate.of("90.0", "0.0"),
         };
 
         // when
@@ -106,6 +120,22 @@ public class DefaultCoordinateServiceTest {
                         hasProperty("invalidValue", nullValue()),
                         hasProperty("message", equalTo("must not be null"))
                 )));
+    }
+
+    @Test
+    public void centralAngle_shouldRequireNonNullSecondCoordinate() throws Exception {
+        // given
+        Method centralAngle = coordService.getClass().getDeclaredMethod("centralAngle", Coordinate.class, Coordinate.class);
+        Object[] invalidArgs = new Object[]{
+                /* coord a */ Coordinate.of("90.0", "0.0"),
+                /* coord b */ null,
+        };
+
+        // when
+        Set<ConstraintViolation<DefaultCoordinateService>> violations = validator.validateParameters(coordService, centralAngle, invalidArgs);
+
+        // then
+        assertThat(violations, is(notNullValue()));
         assertThat(violations, hasItem(
                 allOf(
                         hasProperty("propertyPath", hasToString("centralAngle.b")),
@@ -115,13 +145,13 @@ public class DefaultCoordinateServiceTest {
     }
 
     @Test
-    public void arcLength_shouldRequireValidCoordinates() throws Exception {
+    public void arcLength_shouldRequireValidFirstCoordinate() throws Exception {
         // given
         Method arcLength = coordService.getClass().getDeclaredMethod("arcLength", double.class, Coordinate.class, Coordinate.class);
         Object[] invalidArgs = new Object[]{
                 /* valid radius r  */ 1.0,
                 /* invalid coord a */ Coordinate.of("90.1", "0.0"),
-                /* invalid coord b */ Coordinate.of("0.0", "180.1"),
+                /* valid coord b */ Coordinate.of("0.0", "180.0"),
         };
 
         // when
@@ -135,6 +165,23 @@ public class DefaultCoordinateServiceTest {
                         hasProperty("invalidValue", equalTo(new BigDecimal("90.1"))),
                         hasProperty("message", equalTo("latitude must be between -90.0 and 90.0"))
                 )));
+    }
+
+    @Test
+    public void arcLength_shouldRequireValidSecondCoordinate() throws Exception {
+        // given
+        Method arcLength = coordService.getClass().getDeclaredMethod("arcLength", double.class, Coordinate.class, Coordinate.class);
+        Object[] invalidArgs = new Object[]{
+                /* valid radius r  */ 1.0,
+                /* valid coord a   */ Coordinate.of("90.0", "0.0"),
+                /* invalid coord b */ Coordinate.of("0.0", "180.1"),
+        };
+
+        // when
+        Set<ConstraintViolation<DefaultCoordinateService>> violations = validator.validateParameters(coordService, arcLength, invalidArgs);
+
+        // then
+        assertThat(violations, is(notNullValue()));
         assertThat(violations, hasItem(
                 allOf(
                         hasProperty("propertyPath", hasToString("arcLength.b.longitude")),
@@ -144,13 +191,13 @@ public class DefaultCoordinateServiceTest {
     }
 
     @Test
-    public void arcLength_shouldRequireNonNullCoordinates() throws Exception {
+    public void arcLength_shouldRequireNonNullFirstCoordinate() throws Exception {
         // given
         Method arcLength = coordService.getClass().getDeclaredMethod("arcLength", double.class, Coordinate.class, Coordinate.class);
         Object[] invalidArgs = new Object[]{
                 /* radius r  */ 1.0,
                 /* coord a */ null,
-                /* coord b */ null,
+                /* coord b */ Coordinate.of("90.0", "0.0"),
         };
 
         // when
@@ -164,6 +211,23 @@ public class DefaultCoordinateServiceTest {
                         hasProperty("invalidValue", nullValue()),
                         hasProperty("message", equalTo("must not be null"))
                 )));
+    }
+
+    @Test
+    public void arcLength_shouldRequireNonNullSecondCoordinate() throws Exception {
+        // given
+        Method arcLength = coordService.getClass().getDeclaredMethod("arcLength", double.class, Coordinate.class, Coordinate.class);
+        Object[] invalidArgs = new Object[]{
+                /* radius r  */ 1.0,
+                /* coord a */ Coordinate.of("90.0", "0.0"),
+                /* coord b */ null,
+        };
+
+        // when
+        Set<ConstraintViolation<DefaultCoordinateService>> violations = validator.validateParameters(coordService, arcLength, invalidArgs);
+
+        // then
+        assertThat(violations, is(notNullValue()));
         assertThat(violations, hasItem(
                 allOf(
                         hasProperty("propertyPath", hasToString("arcLength.b")),
@@ -199,14 +263,14 @@ public class DefaultCoordinateServiceTest {
     public void arcLength_shouldAcceptRadiusOfZero() throws Exception {
         // given
         Method arcLength = coordService.getClass().getDeclaredMethod("arcLength", double.class, Coordinate.class, Coordinate.class);
-        Object[] invalidArgs = new Object[]{
+        Object[] validArgs = new Object[]{
                 /* valid radius r   */ 0.0,
                 /* valid coord a    */ Coordinate.of("90.0", "0.0"),
                 /* valid coord b    */ Coordinate.of("0.0", "180.0"),
         };
 
         // when
-        Set<ConstraintViolation<DefaultCoordinateService>> violations = validator.validateParameters(coordService, arcLength, invalidArgs);
+        Set<ConstraintViolation<DefaultCoordinateService>> violations = validator.validateParameters(coordService, arcLength, validArgs);
 
         // then
         assertThat(violations, is(notNullValue()));
@@ -217,14 +281,14 @@ public class DefaultCoordinateServiceTest {
     public void arcLength_shouldAcceptPositiveRadius() throws Exception {
         // given
         Method arcLength = coordService.getClass().getDeclaredMethod("arcLength", double.class, Coordinate.class, Coordinate.class);
-        Object[] invalidArgs = new Object[]{
+        Object[] validArgs = new Object[]{
                 /* valid radius r   */ 0.1,
                 /* valid coord a    */ Coordinate.of("90.0", "0.0"),
                 /* valid coord b    */ Coordinate.of("0.0", "180.0"),
         };
 
         // when
-        Set<ConstraintViolation<DefaultCoordinateService>> violations = validator.validateParameters(coordService, arcLength, invalidArgs);
+        Set<ConstraintViolation<DefaultCoordinateService>> violations = validator.validateParameters(coordService, arcLength, validArgs);
 
         // then
         assertThat(violations, is(notNullValue()));
@@ -232,12 +296,12 @@ public class DefaultCoordinateServiceTest {
     }
 
     @Test
-    public void greatCircleDistanceOnEarthBetween_shouldRequireValidCoordinates() throws Exception {
+    public void greatCircleDistanceOnEarthBetween_shouldRequireValidFirstCoordinate() throws Exception {
         // given
         Method greatCircleDistanceOnEarthBetween = coordService.getClass().getDeclaredMethod("greatCircleDistanceOnEarthBetween", Coordinate.class, Coordinate.class);
         Object[] invalidArgs = new Object[]{
                 /* invalid coord a */ Coordinate.of("90.1", "0.0"),
-                /* invalid coord b */ Coordinate.of("0.0", "180.1"),
+                /* valid coord b   */ Coordinate.of("0.0", "180.0"),
         };
 
         // when
@@ -251,6 +315,22 @@ public class DefaultCoordinateServiceTest {
                         hasProperty("invalidValue", equalTo(new BigDecimal("90.1"))),
                         hasProperty("message", equalTo("latitude must be between -90.0 and 90.0"))
                 )));
+    }
+
+    @Test
+    public void greatCircleDistanceOnEarthBetween_shouldRequireValidSecondCoordinate() throws Exception {
+        // given
+        Method greatCircleDistanceOnEarthBetween = coordService.getClass().getDeclaredMethod("greatCircleDistanceOnEarthBetween", Coordinate.class, Coordinate.class);
+        Object[] invalidArgs = new Object[]{
+                /* valid coord a   */ Coordinate.of("90.0", "0.0"),
+                /* invalid coord b */ Coordinate.of("0.0", "180.1"),
+        };
+
+        // when
+        Set<ConstraintViolation<DefaultCoordinateService>> violations = validator.validateParameters(coordService, greatCircleDistanceOnEarthBetween, invalidArgs);
+
+        // then
+        assertThat(violations, is(notNullValue()));
         assertThat(violations, hasItem(
                 allOf(
                         hasProperty("propertyPath", hasToString("greatCircleDistanceOnEarthBetween.b.longitude")),
@@ -260,12 +340,12 @@ public class DefaultCoordinateServiceTest {
     }
 
     @Test
-    public void greatCircleDistanceOnEarthBetween_shouldRequireNonNullCoordinates() throws Exception {
+    public void greatCircleDistanceOnEarthBetween_shouldRequireNonNullFirstCoordinate() throws Exception {
         // given
         Method greatCircleDistanceOnEarthBetween = coordService.getClass().getDeclaredMethod("greatCircleDistanceOnEarthBetween", Coordinate.class, Coordinate.class);
         Object[] invalidArgs = new Object[]{
                 /* coord a */ null,
-                /* coord b */ null,
+                /* coord b */ Coordinate.of("90.0", "0.0"),
         };
 
         // when
@@ -279,6 +359,22 @@ public class DefaultCoordinateServiceTest {
                         hasProperty("invalidValue", nullValue()),
                         hasProperty("message", equalTo("must not be null"))
                 )));
+    }
+
+    @Test
+    public void greatCircleDistanceOnEarthBetween_shouldRequireNonNullSecondCoordinate() throws Exception {
+        // given
+        Method greatCircleDistanceOnEarthBetween = coordService.getClass().getDeclaredMethod("greatCircleDistanceOnEarthBetween", Coordinate.class, Coordinate.class);
+        Object[] invalidArgs = new Object[]{
+                /* coord a */ Coordinate.of("90.0", "0.0"),
+                /* coord b */ null,
+        };
+
+        // when
+        Set<ConstraintViolation<DefaultCoordinateService>> violations = validator.validateParameters(coordService, greatCircleDistanceOnEarthBetween, invalidArgs);
+
+        // then
+        assertThat(violations, is(notNullValue()));
         assertThat(violations, hasItem(
                 allOf(
                         hasProperty("propertyPath", hasToString("greatCircleDistanceOnEarthBetween.b")),

@@ -1,7 +1,6 @@
 package com.example.domain.geocoord.service;
 
 import com.example.domain.geocoord.model.Coordinate;
-import com.example.domain.geocoord.service.DefaultCoordinateService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -9,8 +8,8 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static com.example.domain.geocoord.model.Constants.MEAN_EARTH_RADIUS;
 import static com.example.domain.geocoord.TestUtils.ERROR;
+import static com.example.domain.geocoord.model.Constants.MEAN_EARTH_RADIUS;
 import static java.lang.StrictMath.PI;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.is;

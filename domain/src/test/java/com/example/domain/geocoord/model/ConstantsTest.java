@@ -1,6 +1,5 @@
 package com.example.domain.geocoord.model;
 
-import com.example.domain.geocoord.model.Constants;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -8,8 +7,8 @@ import org.junit.rules.ExpectedException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import static com.example.domain.geocoord.model.Constants.MEAN_EARTH_RADIUS;
 import static com.example.domain.geocoord.TestUtils.ERROR;
+import static com.example.domain.geocoord.model.Constants.MEAN_EARTH_RADIUS;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
