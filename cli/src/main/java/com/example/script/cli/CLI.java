@@ -2,7 +2,7 @@ package com.example.script.cli;
 
 import com.example.script.cdi.CLIModule;
 import com.example.script.cdi.ConversionModule;
-import com.example.script.cdi.CoordinateServiceModule;
+import com.example.script.cdi.CoordinateModule;
 import com.example.script.cdi.CustomerModule;
 import com.example.script.cdi.IOModule;
 import com.google.inject.Guice;
@@ -36,7 +36,7 @@ class CLI {
             Injector injector = Guice.createInjector(
                     new CLIModule(),
                     new ConversionModule(),
-                    new CoordinateServiceModule(),
+                    new CoordinateModule(),
                     new CustomerModule(),
                     new IOModule(),
                     new ImplicitValidationModule()

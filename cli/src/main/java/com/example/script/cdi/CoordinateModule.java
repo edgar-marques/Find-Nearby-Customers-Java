@@ -4,7 +4,7 @@ import com.example.domain.geocoord.service.CoordinateService;
 import com.example.domain.geocoord.service.DefaultCoordinateService;
 import com.google.inject.AbstractModule;
 
-public class CoordinateServiceModule extends AbstractModule {
+public class CoordinateModule extends AbstractModule {
 
     @Override
     protected void configure() {
