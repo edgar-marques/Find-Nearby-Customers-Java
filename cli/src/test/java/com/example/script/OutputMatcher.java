@@ -11,7 +11,7 @@ import static org.apache.commons.lang3.StringUtils.stripEnd;
 
 public class OutputMatcher extends TypeSafeMatcher<String> {
 
-    private static final String EOL = System.getProperty("line.separator");
+    private static final String EOL = System.lineSeparator();
     private static final Joiner JOINER = Joiner.on("");
     private static final Splitter SPLITTER = Splitter.on(EOL);
     private static final String STRIP_CHARS = null; // strip whitespace chars

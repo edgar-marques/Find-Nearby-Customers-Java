@@ -17,7 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.script.functional.Predicates.safePredicate;
+import static com.example.script.functional.Predicates.safeTest;
 
 /**
  *
@@ -61,7 +61,7 @@ public class DefaultCLIArgsProcessor implements CLIArgsProcessor {
                 .collect(Collectors.toList());
 
         List<Customer> customersWithinRange = customers.stream()
-                        .filter(safePredicate(c -> customerService.isCustomerWithinRange(
+                        .filter(safeTest(c -> customerService.isCustomerWithinRange(
                                 c, args.getTargetLocation(), args.getRadius().doubleValue() * 1_000.0 /* 1km */), false))
                         .collect(Collectors.toList());
 

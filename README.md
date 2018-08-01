@@ -8,8 +8,7 @@ This project is still a work in progress.
 
 **TODO**
 
-* Increase test coverage
-* Write Javadoc comments and generate javadoc JAR
+* Add package-info.java files, write Javadoc comments and generate javadoc JAR
 * Update README file
 
 

@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 public class Predicates {
 
     public static <T, R, E extends Exception>
-    Predicate<T> safePredicate(PredicateWithException<T, E> pe, boolean defaultValue) {
+    Predicate<T> safeTest(PredicateWithException<T, E> pe, boolean defaultValue) {
         return arg -> {
             try {
                 return pe.test(arg);
